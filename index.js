@@ -1,3 +1,9 @@
-// Write Javascript code!
-const appDiv = document.getElementById('app');
-appDiv.innerHTML = `<h1>JS Starter dasd</h1>`;
+async function fetchData(url) {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+        throw new Error(`Erro HTTP: ${response.status}`);
+    }
+
+    return await response.json();
+}
