@@ -40,6 +40,9 @@ async function main() {
     const table = document.querySelector('table');
     const tableBody = document.querySelector('table tbody');
     const tableHead = document.querySelector('table thead');
+    const searchInput = document.querySelector('.form-control');
+    const searchButton = document.querySelector('#button-addon1');
+
     tableBody.innerHTML = '';
     tableHead.innerHTML = '';
 
@@ -47,7 +50,6 @@ async function main() {
     tableHead.appendChild(headerRow);
 
     try {
-        
         const loadingMessage = document.createElement('tr');
         loadingMessage.innerHTML = '<td colspan="7">Carregando...</td>';
         tableBody.appendChild(loadingMessage);
@@ -56,13 +58,37 @@ async function main() {
 
         tableBody.removeChild(loadingMessage);
 
-        data.users.forEach(user => {
-            const row = createTableRow(user);
-            tableBody.appendChild(row);
+        const allUsers = data.users;
+
+        function displayUsers(users) {
+            tableBody.innerHTML = '';
+            users.forEach(user => {
+                const row = createTableRow(user);
+                tableBody.appendChild(row);
+            });
+        }
+
+        searchButton.addEventListener('click', () => {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            const filteredUsers = allUsers.filter(user => {
+                return (
+                    user.firstName.toLowerCase().includes(searchTerm) ||
+                    user.lastName.toLowerCase().includes(searchTerm) ||
+                    user.maidenName.toLowerCase().includes(searchTerm) ||
+                    user.email.toLowerCase().includes(searchTerm) ||
+                    user.phone.toLowerCase().includes(searchTerm)
+                );
+            });
+            displayUsers(filteredUsers);
         });
+
+        displayUsers(allUsers);
+
     } catch (error) {
         console.error('Erro ao buscar os dados:', error);
     }
 }
 
 main();
+
+
