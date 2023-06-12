@@ -1,4 +1,16 @@
-// Função para buscar dados da API
+const headers = ['First Name', 'Last Name', 'Maiden Name', 'Age', 'Gender', 'Email', 'Phone'];
+
+function createTableHeader(headers) {
+    const row = document.createElement('tr');
+    headers.forEach(header => {
+        const th = document.createElement('th');
+        th.scope = 'col';
+        th.textContent = header;
+        row.appendChild(th);
+    });
+    return row;
+}
+
 async function fetchData(url) {
     const response = await fetch(url);
 
@@ -8,7 +20,6 @@ async function fetchData(url) {
 
     return await response.json();
 }
-
 
 function createTableRow(user) {
     const row = document.createElement('tr');
@@ -24,13 +35,16 @@ function createTableRow(user) {
     return row;
 }
 
-
 async function main() {
     const apiURL = 'https://dummyjson.com/users';
+    const table = document.querySelector('table');
     const tableBody = document.querySelector('table tbody');
-  
-   
+    const tableHead = document.querySelector('table thead');
     tableBody.innerHTML = '';
+    tableHead.innerHTML = '';
+
+    const headerRow = createTableHeader(headers);
+    tableHead.appendChild(headerRow);
 
     try {
         
@@ -50,6 +64,5 @@ async function main() {
         console.error('Erro ao buscar os dados:', error);
     }
 }
-
 
 main();
